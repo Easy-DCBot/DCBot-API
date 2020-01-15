@@ -52,7 +52,7 @@ function getBots(User_id){
    });
 }
 
-function getBotCommands(Bot_id){
+function getBotCommands(Bot_id, verify){
     return new Promise(res => {
         query = "SELECT Command,Answer FROM Bot_Commands WHERE Bot_Id = " + Bot_id[0] + ";";
         Database_Connection.query(query,function(err,result){
@@ -100,7 +100,6 @@ function postBotCommand(Bot_id, Command, Answer){
 function BotCommand(Bot_Id, Command){
     return new Promise(res =>{
         query = "SELECT Answer FROM Bot_Commands WHERE Command like '" + Command + "' and Bot_Id = " + Bot_Id + ";";
-        console.log(query);
         Database_Connection.query(query,function(err,result){
             if(err){
                 console.log("[ERROR]" + err);
@@ -118,10 +117,34 @@ function BotCommand(Bot_Id, Command){
     });
 }
 
+function Bot_Own(Bot_Id,User_Id,isAdmin){
+    return new Promise(res =>{
+        if(isAdmin == 1){
+            res(1);
+        }
+        query = "SELECT Bot_Owner_id FROM Bot WHERE Bot_Id = " + Bot_Id + ";";
+        Database_Connection.query(query,function(err,result){
+            if(err){
+                console.log("[ERROR]" + err);
+                if(config.Debug){
+                    throw err;
+                }
+            }else{
+                if(result[0].Bot_Owner_id == User_Id){
+                    res(1);
+                }else{
+                    res(0);
+                }
+            }
+        });
+    });
+}
+
 module.exports = {
     getUser,
     getBots,
     getBotCommands,
     postBotCommand,
-    BotCommand
+    BotCommand,
+    Bot_Own
 };

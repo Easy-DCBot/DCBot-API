@@ -1,4 +1,8 @@
+CREATE USER 'Nobody'@'%' IDENTIFIED BY 'universal';
+
 CREATE DATABASE EasyDiscrodBot;
+
+GRANT ALL PRIVILEGES ON EasyDiscrodBot.* TO 'Nobody'@'%';
 
 USE EasyDiscrodBot;
 
