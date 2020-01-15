@@ -5,7 +5,8 @@ The DCBot-API is builed for the Discord-Bot Template Easy-Discrod-Bot https://gi
 # Get
 
 **get('/')**
-Send you The Name and the Version of the Bot .
+Send you The Name and the Version of the Bot.
+
 **get('getbots')**
 Send you the list of your Bots.
 
