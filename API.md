@@ -12,7 +12,7 @@ Send you the list of your Bots.
 
 ## Post
 **post('/login')**
-You must send your `username` and `password`	in the body. Then you will get your API-Token.
+You must send your `username` and `password` in the body. Then you will get your API-Token.
 
 **post('/me')**
 Is a Debug output, this will only work, if you are an `Admin`.

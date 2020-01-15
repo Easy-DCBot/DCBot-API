@@ -4,12 +4,11 @@ const jwt = require('jsonwebtoken');
 const Database = require('./database.js')
 
 async function login(req, res){
-    
     if(req.body.username != null && req.body.password != null){
         let user = await Database.getUser(req.body.username,req.body.password);
-        if(user != false){
-            let Bot_id = await Database.getBots(user);
-            var token = jwt.sign({ id: user, bot_id : Bot_id}, config.secret, {
+        if(user.ID != false){
+            let Bot_id = await Database.getBots(user.ID);
+            var token = jwt.sign({ id: user.ID, bot_id : Bot_id, isAdmin: user.isAdmin[0]}, config.secret, {
                 expiresIn: 86400 
             });
             res.status(200).send({ auth: true, token: token });
@@ -22,7 +21,11 @@ async function login(req, res){
 async function getToken(req, res){
     let verify = await Verify(req, res);
     if(verify != 0){
-        res.status(200).send(verify);  
+        if(verify.isAdmin == 1){
+            res.status(200).send(verify);  
+        }else{
+            res.status(401).send('Not Permissions');
+        }
     }
     
 }

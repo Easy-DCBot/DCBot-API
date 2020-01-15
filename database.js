@@ -18,7 +18,7 @@ Database_Connection.connect(function(err){
 
 function getUser(user,password){
     return new Promise(res => {
-        query = "SELECT ID FROM Users WHERE username = '"+ user + "' AND password = '" + password + "';";
+        query = "SELECT ID,isAdmin FROM Users WHERE username = '"+ user + "' AND password = '" + password + "';";
         Database_Connection.query(query,function(err, result){
             if(err){
                 console.log("[ERROR]" + err);
@@ -29,7 +29,7 @@ function getUser(user,password){
                 if(result.length === 0){
                     res(false);
                 }else{
-                    res(result[0].ID);
+                    res(result[0]);
                 }
             }
         });
@@ -38,7 +38,7 @@ function getUser(user,password){
 
 function getBots(User_id){
    return new Promise(res => {
-    query = "SELECT Bot_Id FROM Bot WHERE Bot_Owner_id = " + User_id + ";";
+    query = "SELECT Bot_Id,Bot_User_Name FROM Bot WHERE Bot_Owner_id = " + User_id + ";";
     Database_Connection.query(query,function(err,result){
         if(err){
             console.log("[ERROR]" + err);
