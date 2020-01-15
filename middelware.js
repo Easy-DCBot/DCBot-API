@@ -4,13 +4,18 @@ const jwt = require('jsonwebtoken');
 const Database = require('./database.js')
 
 async function login(req, res){
-    let user = await Database.getUser(req.body.username,req.body.password);
-    if(user != false){
-        let Bot_id = await Database.getBots(user);
-        var token = jwt.sign({ id: user, bot_id : Bot_id}, config.secret, {
-        expiresIn: 86400 
-      });
-      res.status(200).send({ auth: true, token: token });
+    
+    if(req.body.username != null && req.body.password != null){
+        let user = await Database.getUser(req.body.username,req.body.password);
+        if(user != false){
+            let Bot_id = await Database.getBots(user);
+            var token = jwt.sign({ id: user, bot_id : Bot_id}, config.secret, {
+                expiresIn: 86400 
+            });
+            res.status(200).send({ auth: true, token: token });
+        }
+    }else{
+        res.status(401).send('Not all attributes');
     }
 }
 
@@ -32,8 +37,12 @@ async function getBots(req, res){
 async function getbotcommands(req, res){ 
     let verify = await Verify(req, res);
     if(verify != 1){
-        var Commands = await Database.getBotCommands(req.body.Bot_id);
-        res.status(200).send(Commands); 
+        if(req.body.Bot_id != null){
+            var Commands = await Database.getBotCommands(req.body.Bot_id);
+            res.status(200).send(Commands); 
+        }else{
+            res.status(401).send('Not all attributes');
+        }
     }
 }
 
@@ -48,6 +57,22 @@ async function postBotCommand(req, res){
             }
             if(postBotCommand == 2){
                 res.status(401).send('Command already exists!');
+            }
+        }else{
+            res.status(401).send('Not all attributes');
+        }
+    }
+}
+
+async function BotCommand(req, res){
+    let verify = await Verify(req, res);
+    if(verify != 1){
+        if(req.body.Bot_id != null && req.body.Command != null){
+            let command = await Database.BotCommand(req.body.Bot_id, req.body.Command);
+            if(command == 0){
+                res.status(200).send('No command found');
+            }else{
+                res.status(200).send(command);
             }
         }else{
             res.status(401).send('Not all attributes');
@@ -73,5 +98,6 @@ module.exports = {
     getToken,
     getBots,
     getbotcommands,
-    postBotCommand
+    postBotCommand,
+    BotCommand
 };

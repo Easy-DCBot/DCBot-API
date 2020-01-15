@@ -37,5 +37,5 @@ app.post('/postBotCommand',function(req, res){
 });
 
 app.post('/BotCommand',function(req, res){
-
+  middelware.BotCommand(req, res);
 });

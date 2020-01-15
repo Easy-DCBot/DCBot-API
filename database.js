@@ -97,9 +97,31 @@ function postBotCommand(Bot_id, Command, Answer){
     });
 }
 
+function BotCommand(Bot_Id, Command){
+    return new Promise(res =>{
+        query = "SELECT Answer FROM Bot_Commands WHERE Command like '" + Command + "' and Bot_Id = " + Bot_Id + ";";
+        console.log(query);
+        Database_Connection.query(query,function(err,result){
+            if(err){
+                console.log("[ERROR]" + err);
+                if(config.Debug){
+                    throw err;
+                }
+            }else{
+                if(result.length != 0){
+                    res(result[0].Answer);
+                }else{
+                    res(0);
+                }
+            }
+        });
+    });
+}
+
 module.exports = {
     getUser,
     getBots,
     getBotCommands,
-    postBotCommand
+    postBotCommand,
+    BotCommand
 };
