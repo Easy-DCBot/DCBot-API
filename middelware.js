@@ -29,12 +29,29 @@ async function getBots(req, res){
     }
 }
 
-async function getbotcommands(req, res){
-    
+async function getbotcommands(req, res){ 
     let verify = await Verify(req, res);
     if(verify != 1){
         var Commands = await Database.getBotCommands(req.body.Bot_id);
         res.status(200).send(Commands); 
+    }
+}
+
+async function postBotCommand(req, res){
+    let verify = await Verify(req, res);
+    if(verify != 1){
+        if(req.body.Bot_id != null || req.body.Command != null || req.body.Answer != 0){
+            let postBotCommand = await Database.postBotCommand(req.body.Bot_id,req.body.Command,req.body.Answer);
+            console.log("sst" + postBotCommand);
+            if(postBotCommand == 0){
+               res.status(200).send("New Command Added!"); 
+            }
+            if(postBotCommand == 2){
+                res.status(401).send('Command already exists!');
+            }
+        }else{
+            res.status(401).send('Not all attributes');
+        }
     }
 }
 
@@ -55,5 +72,6 @@ module.exports = {
     login,
     getToken,
     getBots,
-    getbotcommands
+    getbotcommands,
+    postBotCommand
 };

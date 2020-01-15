@@ -29,5 +29,13 @@ app.post('/me', function(req, res){
 });
 
 app.post('/getbotcommands',function(req, res){
-    middelware.getbotcommands(req, res);
+  middelware.getbotcommands(req, res);
+});
+
+app.post('/postBotCommand',function(req, res){
+  middelware.postBotCommand(req, res);
+});
+
+app.post('/BotCommand',function(req, res){
+
 });
