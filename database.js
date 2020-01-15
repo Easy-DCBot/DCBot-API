@@ -4,7 +4,8 @@ const mysql = require('mysql');
 var Database_Connection = mysql.createConnection({
     host: config.Database_Host,
     user: config.Database_User,
-    password: config.Database_Password
+    password: config.Database_Password,
+    database: config.Database_Database
     });
 
 Database_Connection.connect(function(err){
@@ -16,13 +17,20 @@ Database_Connection.connect(function(err){
 });
 
 function databaseGetUser(user,password){
-    query = "SELECT ID FROM Users WHERE user = "+ user + " AND password = " +password;
-    Database_Connection.query(query,function(err, result){
-        if(err){
-            throw err;
-        }else{
-            console.log("[Debug]Result " + result);
-        }
+    return new Promise(res => {
+        query = "SELECT ID FROM Users WHERE username = '"+ user + "' AND password = '" +password + "';";
+        console.log(query);
+        Database_Connection.query(query,function(err, result, fields, rows){
+            if(err){
+                throw err;
+            }else{
+                if(result.length === 0){
+                    res(false);
+                }else{
+                    res(true);
+                }
+            }
+        });
     });
 }
 
