@@ -1,12 +1,12 @@
 const express = require('express');
 const config = require('./config.json');
-const bodyParser = require('body-parser');
 const middelware = require('./middelware.js');
 
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
@@ -21,6 +21,7 @@ app.get('/getbots',function(req, res){
 });
 
 app.post('/login',(req, res) => {
+  console.log(req.body);
   middelware.login(req, res);
 });
 

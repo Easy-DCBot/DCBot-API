@@ -73,7 +73,8 @@ async function BotCommand(req, res){
         if(req.body.Bot_id != null && req.body.Command != null){
             let command = await Database.BotCommand(req.body.Bot_id, req.body.Command);
             if(command == 0){
-                res.status(200).send('No command found');
+                //res.status(200).send('No command found');
+                res.status(200).send('0');
             }else{
                 res.status(200).send(command);
             }
