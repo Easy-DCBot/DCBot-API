@@ -81,13 +81,6 @@ async function BotCommand(req, res){
     let verify = await Verify(req, res);
     let bot_own = await Database.Bot_Own(req.body.Bot_id, verify.id, verify.isAdmin);
     if(verify != 1){
-<<<<<<< HEAD
-        if(req.body.Bot_id != null && req.body.Command != null){
-            let command = await Database.BotCommand(req.body.Bot_id, req.body.Command);
-            if(command == 0){
-                //res.status(200).send('No command found');
-                res.status(200).send('0');
-=======
         if(bot_own == 1){
             if(req.body.Bot_id != null && req.body.Command != null){
                 let command = await Database.BotCommand(req.body.Bot_id, req.body.Command);
@@ -96,7 +89,6 @@ async function BotCommand(req, res){
                 }else{
                     res.status(200).send(command);
                 }
->>>>>>> dcff438d720599690f387404dfde4666a41f9b8e
             }else{
                 res.status(401).send('Not all attributes');
             }
